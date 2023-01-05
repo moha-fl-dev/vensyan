@@ -14,7 +14,15 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@vensyan/business/data-access": [
+        "libs/business/data-access/src/index.ts"
+      ],
+      "@vensyan/shared/data-access": ["libs/shared/data-access/src/index.ts"],
+      "@vensyan/shared/ui": ["libs/shared/ui/src/index.ts"],
+      "@vensyan/shared/utils": ["libs/shared/utils/src/index.ts"],
+      "@vensyan/types": ["libs/types/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
