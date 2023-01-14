@@ -11,40 +11,40 @@ export interface Database {
     Tables: {
       organisations: {
         Row: {
-          user_id: string
-          created_at: string | null
+          account_type: Database["public"]["Enums"]["account_type"]
+          city: string
+          country: string
+          created_at: string
+          house_number: string
           organisation_id: string
           organisation_name: string
-          sector: Database["public"]["Enums"]["sector"]
           street_name: string
+          user_id: string
           zip_code: string
-          house_number: string
-          city: string
-          country: string
         }
         Insert: {
-          user_id?: string
-          created_at?: string | null
-          organisation_id?: string
-          organisation_name: string
-          sector?: Database["public"]["Enums"]["sector"]
-          street_name: string
-          zip_code: string
-          house_number: string
+          account_type?: Database["public"]["Enums"]["account_type"]
           city: string
           country: string
+          created_at?: string
+          house_number: string
+          organisation_id?: string
+          organisation_name: string
+          street_name: string
+          user_id?: string
+          zip_code: string
         }
         Update: {
-          user_id?: string
-          created_at?: string | null
-          organisation_id?: string
-          organisation_name?: string
-          sector?: Database["public"]["Enums"]["sector"]
-          street_name?: string
-          zip_code?: string
-          house_number?: string
+          account_type?: Database["public"]["Enums"]["account_type"]
           city?: string
           country?: string
+          created_at?: string
+          house_number?: string
+          organisation_id?: string
+          organisation_name?: string
+          street_name?: string
+          user_id?: string
+          zip_code?: string
         }
       }
     }
@@ -55,6 +55,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
+      account_type: "seller" | "buyer"
       mood: "sad" | "ok" | "happy"
       sector: "Educational" | "Salon" | "Office" | "Cleaning"
     }

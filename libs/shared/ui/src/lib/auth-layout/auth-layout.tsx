@@ -1,7 +1,6 @@
 import { Box, Container, Grid, styled, Typography, useTheme } from '@mui/material';
-import { Logo } from '../logo/logo';
+import { LogoIcon } from '../logo/logo';
 import { LayoutPropsWithTitle, WithComponentPropType } from '../ui-types';
-
 
 export function AuthLayout({ children, title }: LayoutPropsWithTitle): React.ReactElement {
 
@@ -23,7 +22,7 @@ export function AuthLayout({ children, title }: LayoutPropsWithTitle): React.Rea
 
           <Grid container direction={'column'} justifyContent='center' alignItems={'center'} gap={2}>
             <Grid item xs>
-              <Logo variant='h3' fontWeight={600} />
+              <LogoIcon />
             </Grid>
 
             <Grid item xs>

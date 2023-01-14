@@ -1,93 +1,114 @@
-import DraftsIcon from '@mui/icons-material/Drafts';
-import HomeIcon from '@mui/icons-material/Home';
-import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, SxProps } from '@mui/material';
+import CampaignIcon from '@mui/icons-material/Campaign';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import LinkIcon from '@mui/icons-material/Link';
+import LoyaltyIcon from '@mui/icons-material/Loyalty';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import MoneyIcon from '@mui/icons-material/Money';
+import SortIcon from '@mui/icons-material/Sort';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import { Grid, Icon, styled } from '@mui/material';
+import { LogoIcon } from '../logo/logo';
+import { OrganisationCard } from '../organisation-card/organisation-card';
+import { SideNav } from '../side-nav/side-nav';
+import { SideNavListItemProps } from '../ui-types';
 
 
-//{ href, icon, text }: DashboardNavProps
 export function DashboardNav() {
 
-
   return (
-    <SideNaVWrapper>
-      <StyledOrganizationWrapper>
-        Company
-      </StyledOrganizationWrapper>
-      <List component="nav" aria-label="dashboard sidebar navigation">
-        <ListItemLink />
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              <DraftsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Drafts" />
-          </ListItemButton>
-        </ListItem>
-      </List>
+    <SideNaVWrapper
+      className='no-scroll'
+    >
+      <Grid container direction={'column'}>
+        <Grid item xs>
+          <LogoIcon width={50} height={50} />
+        </Grid>
+        <Grid item marginTop={2}>
+          <OrganisationCard organisation_name='Pieter Jelles' city='Leeuwarden' />
+        </Grid>
+        <Grid item xs marginTop={2}>
+          <SideNav groupTitle='General' list={sideNavListItemsGeneral} />
+        </Grid>
+        <Grid item xs marginTop={2}>
+          <SideNav groupTitle='Management' list={sideNavListItemsmanagement} />
+        </Grid>
+        <Grid item xs marginTop={2}>
+          <SideNav groupTitle='CRM' list={sideNavListItemsCrm} />
+        </Grid>
+      </Grid>
     </SideNaVWrapper>
   );
 }
 
 export default DashboardNav;
 
+const GreyStyledIcon = styled(Icon)(({ theme }) => ({
+  color: theme.palette.text.secondary
+}))
 
+const sideNavListItemsGeneral: SideNavListItemProps[] = [
+  {
+    icon: <GreyStyledIcon><DashboardIcon /></GreyStyledIcon>,
+    text: 'Home',
+    href: '/dashboard',
+  },
+  {
+    icon: <GreyStyledIcon><LoyaltyIcon /></GreyStyledIcon>,
+    text: 'Sales',
+    href: '/dashboard/onboard',
+  },
+  {
+    icon: <GreyStyledIcon><CampaignIcon /></GreyStyledIcon>,
+    text: 'Campaigns',
+    href: '/dashboard/campaigns',
+  },
+  {
+    icon: <GreyStyledIcon><MoneyIcon /></GreyStyledIcon>,
+    text: 'Finance',
+    href: '/dashboard/finance',
 
-function ListItemLink() {
-  return (
-    <ListItemWithRippleColor disablePadding>
-      <ListItemButton
-        sx={activeStyle}
-      >
-        <ListItemIcon
-          sx={activeStyle}
-        >
-          <HomeIcon
-            fontSize='medium'
-          />
-        </ListItemIcon>
-        <ListItemText primary="Inbox" />
-      </ListItemButton>
-    </ListItemWithRippleColor>
-  )
-}
-
-const ListItemWithRippleColor = styled(ListItem)(({ theme }) => ({
-  '.MuiTouchRipple-child': {
-    backgroundColor: theme.palette.primary.main,
   }
-}));
+]
 
+const sideNavListItemsmanagement: SideNavListItemProps[] = [
+  {
+    icon: <LinkIcon />,
+    text: 'Connections',
+    href: '/dashboard/connections',
+  },
 
-const activeStyle: SxProps = {
-  fontWeight: 'bold',
-  color: 'primary.main'
-}
+  {
+    icon: <GreyStyledIcon><InventoryIcon /></GreyStyledIcon>,
+    text: 'Inventory',
+    href: '/dashboard/inventory',
+  },
 
-const inactiveStyle: SxProps = {
-  fontWeight: 'normal',
-}
+  {
+    icon: <GreyStyledIcon><ViewListIcon /></GreyStyledIcon>,
+    text: 'Orders',
+    href: '/dashboard/orders',
+  },
+  {
+    icon: <GreyStyledIcon><SortIcon /></GreyStyledIcon>,
+    text: 'Invoice',
+    href: '/dashboard/invoces',
+  }
+]
 
+const sideNavListItemsCrm: SideNavListItemProps[] = [
+  {
+    icon: <GreyStyledIcon><ManageAccountsIcon /></GreyStyledIcon>,
+    text: 'Clients',
+    href: '/dashboard/clients',
+  }
+]
 
 const SideNaVWrapper = styled('div')(({ theme }) => ({
   width: '280px',
   flexShrink: 0,
-  borderRight: '2px dashed #e0e0e0',
+  borderRight: '1px dashed #e0e0e0',
   padding: theme.spacing(2),
   overflowY: 'auto',
 }));
 
-const StyledOrganizationWrapper = styled(Box, { label: 'StyledOrganizationWrapper' })(({ theme }) => ({
-  backgroundColor: theme.palette.grey[200],
-  borderRadius: '5px',
-  width: '100%',
-  padding: theme.spacing(2),
-  marginBottom: theme.spacing(2),
-  WebkitTransition: '250ms, background-color 400ms',
-  height: '100px',
-  border: `0.5px solid ${theme.palette.grey[300]}`,
-
-  '&:hover': {
-    cursor: 'pointer',
-    backgroundColor: theme.palette.grey[300],
-    WebkitTransition: '250ms, background-color 400ms',
-  }
-}))

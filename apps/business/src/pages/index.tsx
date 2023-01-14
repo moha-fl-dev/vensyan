@@ -8,7 +8,7 @@ import { trpc } from '../utils/trpc';
 
 const Home: NextPageWithLayout = (): ReactElement => {
 
-  const { data, isLoading } = trpc.hello.useQuery({ text: 'server' });
+  const { data, isLoading } = trpc.hello.useQuery({ text: 'Vensyan' });
 
   if (isLoading) {
     return (
@@ -56,7 +56,6 @@ const Home: NextPageWithLayout = (): ReactElement => {
             Get started
           </Button>
         </Box>
-
       </Paper>
     </div >
   )

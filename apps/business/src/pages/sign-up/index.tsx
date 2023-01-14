@@ -4,7 +4,7 @@ import { AppRouter } from '@vensyan/business/data-access';
 import { redirectIfAuthed } from '@vensyan/shared/data-access';
 import { AuthLayout, AuthOptionsText, Link, NextPageWithLayout } from '@vensyan/shared/ui';
 import { isTrpcClientError, supabaseServerClientProps } from '@vensyan/shared/utils';
-import { TsignIn, TsignUp } from '@vensyan/types';
+import { SignUpWithConfirmPassword, TsignIn } from '@vensyan/types';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next/types';
@@ -20,7 +20,7 @@ const SignIn: NextPageWithLayout = (): ReactElement => {
     const [invalidSignupCredentials, setinvalidSignupCredentials] = useState<boolean>(false);
     const [dberrorMessages, setDberrorMessages] = useState<string>('');
 
-    const { register, handleSubmit, control, formState: { errors }, setError } = useForm<TsignUp>(
+    const { register, handleSubmit, control, formState: { errors }, setError } = useForm<SignUpWithConfirmPassword>(
         {
             defaultValues: {
                 email: '',

@@ -1,7 +1,9 @@
 import { Typography } from '@mui/material';
+import Image from 'next/image';
 import { ReactElement } from 'react';
 import { Link } from '../next-link-mui-style/next-link-mui-style';
 import { ILogoProps } from '../ui-types';
+
 
 export function Logo({ variant, fontWeight }: ILogoProps): ReactElement {
 
@@ -15,6 +17,20 @@ export function Logo({ variant, fontWeight }: ILogoProps): ReactElement {
       >
         Vensyan
       </Typography>
+    </Link >
+  );
+};
+
+
+type ILogoIconProps = {
+  width?: number;
+  height?: number;
+}
+
+export function LogoIcon({ width = 100, height = 100 }: ILogoIconProps): ReactElement {
+  return (
+    <Link href={'/'} >
+      <Image src='/logo_icon.png' priority alt='logo' width={width} height={height} />
     </Link >
   );
 };

@@ -29,8 +29,6 @@ const Wrapper = styled(Box)<WithComponentPropType>({
   minHeight: '100%',
 })
 
-
-
 const MainContentWrapper = styled(Container)(({ theme }) => ({
   flexGrow: 1,
   overflow: 'auto',

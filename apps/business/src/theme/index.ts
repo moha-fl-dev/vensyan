@@ -109,6 +109,10 @@ export const customTheme = createTheme({
                         textDecoration: 'none',
                     },
 
+                    ...(ownerState.fullWidth && {
+                        lineHeight: 2.03,
+                    }),
+
                     ...(ownerState.color === 'primary' && ownerState.variant === 'contained' && {
                         '&:hover': {
                             backgroundColor: '#B66816',

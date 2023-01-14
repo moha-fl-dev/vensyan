@@ -4,6 +4,7 @@ import { SignInSchema, SignUpSchema, TsignUp } from '@vensyan/types';
 import { ZodError } from 'zod';
 import { authProcedure, router } from '../../trpc';
 
+
 export const auth = router({
 
     signIn: authProcedure.input({
@@ -67,7 +68,7 @@ export const auth = router({
 
         try {
 
-            await authService.signUp({ email, password });
+            await authService.signUp({ email, password, hasOrganization: false });
 
             return true
 
@@ -86,3 +87,4 @@ export const auth = router({
         }
     })
 })
+
