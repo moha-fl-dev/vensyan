@@ -1,18 +1,21 @@
-import { Box, Button, Container, FormControl, Grid, styled, TextField, Typography, useTheme } from '@mui/material';
+import { Alert, Box, Button, Container, FormControl, Grid, styled, TextField, Typography, useTheme } from '@mui/material';
+import { AppRouter } from '@vensyan/business/data-access';
 import { NextPageWithLayout, OnboardingLayout } from '@vensyan/shared/ui';
-import { TaddOrganisation } from '@vensyan/types';
+import { isTrpcClientError } from '@vensyan/shared/utils';
+import { Torganisation } from '@vensyan/types';
 import { LogoIcon } from 'libs/shared/ui/src/lib/logo/logo';
 import Head from 'next/head';
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { trpc } from '../../../utils/trpc';
-
 
 const Onboard: NextPageWithLayout = (): ReactElement => {
 
     const theme = useTheme();
 
-    const { handleSubmit, formState: { errors }, control } = useForm<TaddOrganisation>({
+    const [serverError, setServerError] = useState<string | null>(null);
+
+    const { handleSubmit, formState: { errors }, control } = useForm<Torganisation>({
         defaultValues: {
             organisation_name: '',
             city: '',
@@ -25,11 +28,25 @@ const Onboard: NextPageWithLayout = (): ReactElement => {
 
     const { mutate } = trpc.Organisation.new.useMutation({
         onSuccess: (data) => {
+        },
+
+        onError: (error) => {
+
+            if (isTrpcClientError<AppRouter>(error)) {
+                const { data, message, meta, name, shape, stack, cause } = error
+
+                if (data?.code === "BAD_REQUEST") {
+                    return setServerError(() => 'This organisation already exists');
+                }
+            }
+
+
+            return setServerError(() => 'Oeps something went wrong. Please try again later');
         }
     });
 
-    const onSubmit = (data: TaddOrganisation) => {
-        mutate(data);
+    const onSubmit = (data: Torganisation) => {
+        return mutate(data);
     }
 
     return (
@@ -72,6 +89,17 @@ const Onboard: NextPageWithLayout = (): ReactElement => {
                 </Box>
 
                 <Grid container direction={'column'} gap={1}>
+                    {
+                        serverError && (
+                            <Grid item xs>
+                                <Alert severity="error"
+                                    sx={{
+                                        alignItems: 'center',
+                                    }}
+                                >{serverError}</Alert>
+                            </Grid>
+                        )
+                    }
                     <Grid item xs>
                         <FormControl fullWidth>
 

@@ -20,7 +20,7 @@ export async function createContextInner(opts: CreateInnerContextOptions) {
 export async function createContext(opts: CreateNextContextOptions, account_type: Account_type) {
 
     const { req, res, } = opts;
-    const contextInner = await createContextInner({ account_type })
+    // const contextInner = await createContextInner({ account_type })
 
     const dependecyValues: supabaseServerClientParams = {
         req,
@@ -45,14 +45,12 @@ export async function createContext(opts: CreateNextContextOptions, account_type
 
     if (!session) {
         return {
-            ...contextInner,
             req: opts.req,
             res: opts.res,
         }
     }
 
     return {
-        ...contextInner,
         req: opts.req,
         res: opts.res,
         session,

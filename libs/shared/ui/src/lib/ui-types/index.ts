@@ -1,6 +1,6 @@
 import { EmotionCache } from "@emotion/cache";
 import { Variant } from "@mui/material/styles/createTypography";
-import { TaddOrganisation } from '@vensyan/types';
+import { Torganisation } from '@vensyan/types';
 import { AppProps } from "next/app";
 import { NextPage } from "next/types";
 import { Dispatch, ReactNode, SetStateAction } from "react";
@@ -62,7 +62,7 @@ export type DashboardNavProps = {
 }
 
 
-export type OrganisationCardProps = Pick<TaddOrganisation, "organisation_name" | "city">
+export type OrganisationCardProps = Pick<Torganisation, "organisation_name" | "city">
 
 
 export type SideNavListItemProps = {

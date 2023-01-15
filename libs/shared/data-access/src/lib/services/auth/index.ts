@@ -1,7 +1,9 @@
 import { AuthError, User } from "@supabase/supabase-js";
-import { TsignIn, TsignUp } from "@vensyan/types";
+import { TsignIn, TsignUp, UserMetaData } from "@vensyan/types";
 import { injectable } from "tsyringe";
 import { SupaBaseClient } from "../../IoC/base";
+
+
 
 @injectable()
 export class AuthService {
@@ -40,10 +42,9 @@ export class AuthService {
         return user
     }
 
-    public sayHello(): string {
-        return 'hello'
-    }
+    public async updateUserMetadata({ account_type, hasOrganization }: UserMetaData) {
 
+    }
 
     public async signOut(): Promise<void> { }
     public getSession(): void { }

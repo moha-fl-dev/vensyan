@@ -1,4 +1,5 @@
-import { OrganisationSchema, TaddOrganisation } from '@vensyan/types';
+import { TRPCError } from '@trpc/server';
+import { OrganisationSchema, Torganisation } from '@vensyan/types';
 import { ZodError } from 'zod';
 import { organisationProcedure, router } from "../../trpc";
 
@@ -13,16 +14,27 @@ export const Organisation = router({
                 return input;
             } catch (e) {
                 if (e instanceof ZodError) {
-                    throw new ZodError<TaddOrganisation>(e.issues)
+                    throw new ZodError<Torganisation>(e.issues)
                 }
             }
         }
     }).mutation(async ({ input, ctx }) => {
         const { service } = ctx
 
-        const data = await service.onboardOrganisation(input)
-        console.log(data)
-        return
+        try {
+
+            const data = await service.onboardOrganisation(input)
+
+            return data
+
+        } catch (e: unknown) {
+
+            throw new TRPCError({
+                code: 'BAD_REQUEST',
+                message: "PostgrestError",
+                cause: e
+            })
+        }
     }),
 
     edit: organisationProcedure.input({

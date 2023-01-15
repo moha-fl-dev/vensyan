@@ -37,7 +37,7 @@ export const OrganisationSchema = z.object({
   house_number: z.string().min(1, { message: 'House number must be at least 1 character' }),
 })
 
-export type TaddOrganisation = z.infer<typeof OrganisationSchema>
+export type Torganisation = z.infer<typeof OrganisationSchema>
 
 export type SupabaseClientCtx = ReturnType<typeof supaBaseClient>
 
@@ -46,4 +46,14 @@ export type Account_type = "buyer" | "seller"
 export interface BaseCtxParams {
   client: SupabaseClientCtx
   account_type: Account_type
+}
+
+
+export type UserMetaData = {
+  hasOrganization: boolean
+  account_type: Account_type
+}
+
+export type UpdateUserMetaData = Partial<UserMetaData> & {
+  user_id: string
 }
