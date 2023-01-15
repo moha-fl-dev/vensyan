@@ -29,7 +29,7 @@ type ILogoIconProps = {
 
 export function LogoIcon({ width = 100, height = 100 }: ILogoIconProps): ReactElement {
   return (
-    <Link href={'/'} >
+    <Link href={'/'} as={'/logo_icon.png'} prefetch={false} >
       <Image src='/logo_icon.png' priority alt='logo' width={width} height={height} />
     </Link >
   );

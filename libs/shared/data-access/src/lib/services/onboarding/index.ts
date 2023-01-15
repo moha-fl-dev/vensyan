@@ -1,13 +1,20 @@
-import { Account_type, BaseCtxParams, SupabaseClientCtx, TaddOrganisation } from "@vensyan/types";
+import { TaddOrganisation } from "@vensyan/types";
+import { injectable } from "tsyringe";
+import { SupaBaseClient } from "../../IoC/base";
 
-export class OnboardingService implements BaseCtxParams {
+@injectable()
+export class OnboardingService {
 
-    constructor(readonly client: SupabaseClientCtx, readonly account_type: Account_type) { }
+    constructor(private supabaseClient: SupaBaseClient) { }
 
 
     async onboardOrganisation(input: TaddOrganisation) {
+
+        return input;
     }
 
     async editOrganisation(input: any) { }
+
+    async getOrganisation(input: TaddOrganisation) { }
 }
 

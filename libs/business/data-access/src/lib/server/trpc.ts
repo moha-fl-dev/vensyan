@@ -1,5 +1,6 @@
 import { initTRPC } from '@trpc/server';
-import { AuthService, Context, OnboardingService } from '@vensyan/shared/data-access';
+import { AuthService, container, Context, OnboardingService } from '@vensyan/shared/data-access';
+import 'reflect-metadata';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 
@@ -34,27 +35,22 @@ export const t = initTRPC.context<Context>().meta<Meta>().create({
 
 const authMiddleware = t.middleware(async ({ ctx, next, meta }) => {
 
-    const { client, account_type } = ctx;
-
-
-    const authService = new AuthService(client, account_type);
+    const service = container.resolve<AuthService>(AuthService)
 
     return next({
         ctx: {
-            authService
+            service
         },
     });
 });
 
 const organisationMiddleware = t.middleware(async ({ ctx, next, }) => {
 
-    const { client, account_type } = ctx;
-
-    const onboardService = new OnboardingService(client, account_type);
+    const service = container.resolve<OnboardingService>(OnboardingService)
 
     return next({
         ctx: {
-            onboardService
+            service
         },
     });
 })
@@ -62,7 +58,6 @@ const organisationMiddleware = t.middleware(async ({ ctx, next, }) => {
 // Base router and procedure helpers
 export const router = t.router
 export const procedure = t.procedure
-
 
 export const authProcedure = t.procedure.use(authMiddleware)
 export const organisationProcedure = t.procedure.use(organisationMiddleware);

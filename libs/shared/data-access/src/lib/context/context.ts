@@ -1,8 +1,9 @@
 import { inferAsyncReturnType } from '@trpc/server';
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { supaBaseClient } from '@vensyan/shared/utils';
-import { Account_type } from '@vensyan/types';
-
+import { Account_type, supabaseServerClientParams } from '@vensyan/types';
+import 'reflect-metadata';
+import { SupaBaseClient } from '../IoC/base';
+import { container } from '../IoC/container';
 
 interface CreateInnerContextOptions extends Partial<CreateNextContextOptions> {
     account_type: Account_type;
@@ -19,9 +20,19 @@ export async function createContextInner(opts: CreateInnerContextOptions) {
 export async function createContext(opts: CreateNextContextOptions, account_type: Account_type) {
 
     const { req, res, } = opts;
-    const contextInner = await createContextInner({ account_type });
+    const contextInner = await createContextInner({ account_type })
 
-    const client = supaBaseClient({ req, res });
+    const dependecyValues: supabaseServerClientParams = {
+        req,
+        res,
+        account_type
+    }
+
+    const supa = container.register(SupaBaseClient, {
+        useValue: new SupaBaseClient(dependecyValues)
+    }).resolve<SupaBaseClient>(SupaBaseClient)
+
+    const { client } = supa.client()
 
     const {
         data: { session },
@@ -37,17 +48,14 @@ export async function createContext(opts: CreateNextContextOptions, account_type
             ...contextInner,
             req: opts.req,
             res: opts.res,
-            client
         }
     }
-
 
     return {
         ...contextInner,
         req: opts.req,
         res: opts.res,
-        client,
-        session
+        session,
     }
 };
 

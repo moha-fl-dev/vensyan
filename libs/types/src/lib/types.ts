@@ -7,9 +7,6 @@ export const SignInSchema = z.object({
   password: z.string().min(8, { message: 'Password must be at least 8 characters' })
 })
 
-export const account_type = z.enum(['buyer', 'seller'])
-
-
 export const SignUpSchema = z.object({
   email: z.string().email({ message: 'Email must be a valid email' }),
   password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
@@ -26,11 +23,12 @@ export type TsignUp = Omit<SignUpWithConfirmPassword, "ConfirmPassword"> & {
 
 export type supabaseServerClientParams = {
   req: NextApiRequest
-  res: NextApiResponse
+  res: NextApiResponse,
+  account_type: Account_type
 }
 
 
-export const AddOrgSchema = z.object({
+export const OrganisationSchema = z.object({
   organisation_name: z.string().min(1, { message: 'Organisation name must be at least 1 character' }),
   street_name: z.string().min(1, { message: 'Street name must be at least 1 character' }),
   zip_code: z.string().min(1, { message: 'Zip code must be at least 1 character' }),
@@ -39,7 +37,7 @@ export const AddOrgSchema = z.object({
   house_number: z.string().min(1, { message: 'House number must be at least 1 character' }),
 })
 
-export type TaddOrganisation = z.infer<typeof AddOrgSchema>
+export type TaddOrganisation = z.infer<typeof OrganisationSchema>
 
 export type SupabaseClientCtx = ReturnType<typeof supaBaseClient>
 

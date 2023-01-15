@@ -28,10 +28,12 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.41.3",
     "react-is": "18.2.0",
+    "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
     "sharp": "^0.31.3",
     "superjson": "^1.12.1",
     "tslib": "^2.3.0",
+    "tsyringe": "^4.7.0",
     "zod": "^3.20.2"
   },
   "devDependencies": {

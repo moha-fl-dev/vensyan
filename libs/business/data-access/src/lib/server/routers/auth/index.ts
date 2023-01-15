@@ -24,13 +24,13 @@ export const auth = router({
 
     }).mutation(async ({ input, ctx }) => {
 
-        const { authService } = ctx;
+        const { service } = ctx;
 
         const { email, password } = input;
 
         try {
 
-            await authService.signIn({ email, password });
+            await service.signIn({ email, password });
 
             return true
 
@@ -62,13 +62,13 @@ export const auth = router({
             }
         },
     }).mutation(async ({ input, ctx }) => {
-        const { authService } = ctx;
+        const { service } = ctx;
 
         const { email, password } = input;
 
         try {
 
-            await authService.signUp({ email, password, hasOrganization: false });
+            await service.signUp({ email, password, hasOrganization: false });
 
             return true
 
@@ -87,4 +87,3 @@ export const auth = router({
         }
     })
 })
-
