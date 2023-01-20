@@ -22,8 +22,6 @@ export class OnboardingService {
 
         if (error) {
 
-            console.log(error)
-
             throw error
         }
 
@@ -33,12 +31,8 @@ export class OnboardingService {
             await this.updateUserMetaData({ hasOrganization: true, user_id })
         }
         catch (e) {
-
-            console.log(e)
-
             throw e
         }
-
         return data;
     }
 

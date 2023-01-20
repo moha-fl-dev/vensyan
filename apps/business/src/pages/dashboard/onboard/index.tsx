@@ -1,7 +1,7 @@
 import { Alert, Box, Button, Container, FormControl, Grid, styled, TextField, Typography, useTheme } from '@mui/material';
 import { AppRouter } from '@vensyan/business/data-access';
 import { NextPageWithLayout, OnboardingLayout } from '@vensyan/shared/ui';
-import { isTrpcClientError } from '@vensyan/shared/utils';
+import { dispatchServerError } from '@vensyan/shared/utils';
 import { Torganisation } from '@vensyan/types';
 import { LogoIcon } from 'libs/shared/ui/src/lib/logo/logo';
 import Head from 'next/head';
@@ -15,7 +15,7 @@ const Onboard: NextPageWithLayout = (): ReactElement => {
 
     const [serverError, setServerError] = useState<string | null>(null);
 
-    const { handleSubmit, formState: { errors }, control } = useForm<Torganisation>({
+    const { handleSubmit, formState: { errors }, control, setError } = useForm<Torganisation>({
         defaultValues: {
             organisation_name: '',
             city: '',
@@ -31,21 +31,17 @@ const Onboard: NextPageWithLayout = (): ReactElement => {
         },
 
         onError: (error) => {
-
-            if (isTrpcClientError<AppRouter>(error)) {
-                const { data, message, meta, name, shape, stack, cause } = error
-
-                if (data?.code === "BAD_REQUEST") {
-                    return setServerError(() => 'This organisation already exists');
+            return dispatchServerError<AppRouter, Torganisation>({
+                setStateAction: setServerError,
+                error, zodSchemaError: {
+                    setError
                 }
-            }
-
-
-            return setServerError(() => 'Oeps something went wrong. Please try again later');
+            })
         }
     });
 
     const onSubmit = (data: Torganisation) => {
+
         return mutate(data);
     }
 
@@ -107,10 +103,10 @@ const Onboard: NextPageWithLayout = (): ReactElement => {
                                 name='organisation_name'
                                 control={control}
                                 rules={{
-                                    required: {
-                                        value: true,
-                                        message: 'Please enter your organisation name'
-                                    }
+                                    // required: {
+                                    //     value: true,
+                                    //     message: 'Please enter your organisation name'
+                                    // }
                                 }}
                                 render={({ field }) => (
 
@@ -118,7 +114,7 @@ const Onboard: NextPageWithLayout = (): ReactElement => {
 
                                         {...field}
                                         margin="normal"
-                                        required
+                                        // required
                                         value={field.value}
                                         onChange={field.onChange}
                                         fullWidth

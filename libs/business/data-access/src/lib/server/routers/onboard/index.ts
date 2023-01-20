@@ -12,10 +12,15 @@ export const Organisation = router({
                 OrganisationSchema.parse(input);
 
                 return input;
-            } catch (e) {
+            } catch (e: unknown) {
+
                 if (e instanceof ZodError) {
                     throw new ZodError<Torganisation>(e.issues)
                 }
+
+                throw new TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                })
             }
         }
     }).mutation(async ({ input, ctx }) => {
@@ -31,8 +36,7 @@ export const Organisation = router({
 
             throw new TRPCError({
                 code: 'BAD_REQUEST',
-                message: "PostgrestError",
-                cause: e
+                message: "This organisation already exists"
             })
         }
     }),
