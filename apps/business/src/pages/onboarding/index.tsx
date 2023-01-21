@@ -1,14 +1,15 @@
 import { Alert, Box, Button, Container, FormControl, Grid, styled, TextField, Typography, useTheme } from '@mui/material';
 import { AppRouter } from '@vensyan/business/data-access';
 import { NextPageWithLayout, OnboardingLayout } from '@vensyan/shared/ui';
-import { dispatchServerError } from '@vensyan/shared/utils';
+import { dispatchServerError, supabaseServerClientProps } from '@vensyan/shared/utils';
 import { Torganisation } from '@vensyan/types';
 import { LogoIcon } from 'libs/shared/ui/src/lib/logo/logo';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { GetServerSidePropsContext } from 'next/types';
 import { ReactElement, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { trpc } from '../../../utils/trpc';
+import { trpc } from '../../utils/trpc';
 
 const Onboard: NextPageWithLayout = (): ReactElement => {
 
@@ -349,3 +350,47 @@ Onboard.getLayout = function (page: ReactElement): ReactElement {
 
 
 export default Onboard;
+
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+
+    const client = supabaseServerClientProps(ctx)
+
+    const {
+        data: { session },
+    } = await client.auth.getSession()
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/sign-in',
+                permanent: false,
+            }
+        }
+    }
+
+    const { user } = session
+
+    if (!user) {
+        return {
+            redirect: {
+                destination: '/sign-in',
+                permanent: false,
+            }
+        }
+    }
+
+    if (user.user_metadata.hasOrganization === true) {
+        return {
+            redirect: {
+                destination: '/dashboard',
+                permanent: false,
+            }
+        }
+    }
+
+
+    return {
+        props: {}
+    }
+}

@@ -14,7 +14,7 @@ export class OnboardingService {
 
         const { data, error } = await client.from('organisations').insert({
             ...input,
-            user_id: '38bebdea-8b6a-45aa-a79d-14de413c838a',
+            user_id: 'f6181962-6295-4f1f-bcfc-230b5b91f456',
             account_type,
         }).select('user_id').single()
 

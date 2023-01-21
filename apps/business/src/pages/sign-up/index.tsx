@@ -31,7 +31,7 @@ const SignIn: NextPageWithLayout = (): ReactElement => {
     const { mutate, isLoading } = trpc.auth.signUp.useMutation({
 
         onSuccess: () => {
-            router.push('/dashboard');
+            router.push('/onboarding');
         },
 
         onError(error) {

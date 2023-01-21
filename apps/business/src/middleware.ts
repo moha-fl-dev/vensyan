@@ -6,6 +6,7 @@ import { NextResponse } from 'next/server'
 export async function middleware(req: NextRequest) {
 
     const res = NextResponse.next()
+
     const supabase = createMiddlewareSupabaseClient({ req, res })
 
     const {
@@ -16,18 +17,19 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL('/sign-in', req.url))
     }
 
-    const {
-        data: { user },
-        error
-    } = await supabase.auth.getUser()
+    const { user } = session
 
-    if (error) {
+    if (!user) {
         return NextResponse.redirect(new URL('/sign-in', req.url))
+    }
+
+    if (user.user_metadata.hasOrganization === false) {
+        return NextResponse.redirect(new URL('/onboarding', req.url))
     }
 
     return res
 }
 
 export const config = {
-    matcher: '/dashboard/:path*',
+    matcher: ['/dashboard/:path*'],
 }

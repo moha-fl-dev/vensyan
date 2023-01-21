@@ -11,6 +11,8 @@ export async function redirectIfAuthed({ client, destination }: Params) {
 
     if (session) {
 
+        const { user } = session
+
         const { error } = await client.auth.getUser(session.access_token)
 
         if (error) {

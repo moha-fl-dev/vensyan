@@ -24,11 +24,14 @@ export const Organisation = router({
             }
         }
     }).mutation(async ({ input, ctx }) => {
-        const { service } = ctx
+        const { service, authService } = ctx
 
         try {
 
             const data = await service.onboardOrganisation(input)
+
+            // refresh session. account for new values. such as hasOrganization = true
+            await authService.setSession()
 
             return data
 

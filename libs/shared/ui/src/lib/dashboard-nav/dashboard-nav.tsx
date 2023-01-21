@@ -56,7 +56,7 @@ const sideNavListItemsGeneral: SideNavListItemProps[] = [
   {
     icon: <GreyStyledIcon><LoyaltyIcon /></GreyStyledIcon>,
     text: 'Sales',
-    href: '/dashboard/onboard',
+    href: '/onboarding',
   },
   {
     icon: <GreyStyledIcon><CampaignIcon /></GreyStyledIcon>,

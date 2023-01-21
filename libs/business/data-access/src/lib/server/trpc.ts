@@ -35,11 +35,11 @@ export const t = initTRPC.context<Context>().meta<Meta>().create({
 
 const authMiddleware = t.middleware(async ({ ctx, next, meta }) => {
 
-    const service = container.resolve<AuthService>(AuthService)
+    const authService = container.resolve<AuthService>(AuthService)
 
     return next({
         ctx: {
-            service
+            authService
         },
     });
 });
@@ -60,4 +60,4 @@ export const router = t.router
 export const procedure = t.procedure
 
 export const authProcedure = t.procedure.use(authMiddleware)
-export const organisationProcedure = t.procedure.use(organisationMiddleware);
+export const organisationProcedure = t.procedure.use(authMiddleware).use(organisationMiddleware);

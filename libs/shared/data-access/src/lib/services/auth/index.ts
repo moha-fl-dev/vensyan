@@ -47,7 +47,14 @@ export class AuthService {
     }
 
     public async signOut(): Promise<void> { }
+
     public getSession(): void { }
-    public setSession(): void { }
+
+    public async setSession(): Promise<void> {
+
+        const { client } = this.supa.client()
+
+        const { data: { session } } = await client.auth.refreshSession()
+    }
 
 }
