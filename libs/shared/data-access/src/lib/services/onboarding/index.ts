@@ -1,6 +1,9 @@
-import { Torganisation, UpdateUserMetaData } from "@vensyan/types";
+import { OrganisationWithId, UpdateUserMetaData } from "@vensyan/types";
 import { injectable } from "tsyringe";
 import { SupaBaseClient } from "../../IoC/base";
+
+
+
 
 @injectable()
 export class OnboardingService {
@@ -8,13 +11,14 @@ export class OnboardingService {
     constructor(private supabaseClient: SupaBaseClient) { }
 
 
-    async onboardOrganisation(input: Torganisation) {
+    async onboardOrganisation(input: OrganisationWithId) {
+
 
         const { account_type, client } = this.supabaseClient.client()
 
         const { data, error } = await client.from('organisations').insert({
             ...input,
-            user_id: 'f6181962-6295-4f1f-bcfc-230b5b91f456',
+            user_id: input.user_id,
             account_type,
         }).select('user_id').single()
 
@@ -38,7 +42,19 @@ export class OnboardingService {
 
     async editOrganisation(input: any) { }
 
-    async getOrganisation(input: Torganisation) { }
+    async getOrganisationById(input: Pick<OrganisationWithId, "user_id">) {
+
+        const { client } = this.supabaseClient.client()
+
+        const { data, error } = await client.from('organisations').select('*').eq('user_id', input.user_id).single()
+
+        if (error) {
+
+            throw error
+        }
+
+        return data
+    }
 
     async updateUserMetaData(input: UpdateUserMetaData) {
 

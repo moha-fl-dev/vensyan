@@ -1,12 +1,12 @@
 import { TRPCError } from '@trpc/server';
-import { OrganisationSchema, Torganisation } from '@vensyan/types';
+import { OrganisationSchema, OrganisationWithId, Torganisation } from '@vensyan/types';
 import { ZodError } from 'zod';
 import { organisationProcedure, router } from "../../trpc";
 
 
 export const Organisation = router({
     new: organisationProcedure.input({
-        parse(input) {
+        parse(input: Torganisation) {
 
             try {
                 OrganisationSchema.parse(input);
@@ -24,11 +24,17 @@ export const Organisation = router({
             }
         }
     }).mutation(async ({ input, ctx }) => {
-        const { service, authService } = ctx
+
+        const { service, authService, user_id } = ctx
+
+        const params: OrganisationWithId = {
+            ...input,
+            user_id
+        }
 
         try {
 
-            const data = await service.onboardOrganisation(input)
+            const data = await service.onboardOrganisation(params)
 
             // refresh session. account for new values. such as hasOrganization = true
             await authService.setSession()
@@ -44,13 +50,30 @@ export const Organisation = router({
         }
     }),
 
-    edit: organisationProcedure.input({
-        parse(input) { }
-    }).mutation(async ({ input, ctx }) => { }),
+    edit: organisationProcedure.mutation(async ({ input, ctx }) => {
 
-    get: organisationProcedure.input({
-        parse(input) { }
-    }).query(async ({ input, ctx }) => { }),
+    }),
+
+    get: organisationProcedure.query(async ({ input, ctx }) => {
+        const { user_id, service } = ctx
+
+        try {
+            const data = await service.getOrganisationById({ user_id })
+
+            const { organisation_name, city } = data
+
+            return {
+                organisation_name,
+                city
+            }
+
+        } catch (e: unknown) {
+            throw new TRPCError({
+                code: 'BAD_REQUEST',
+                message: "Organisation not found"
+            })
+        }
+    }),
     getAll: organisationProcedure.input({
         parse(input) { }
     }).query(async ({ ctx }) => { }),

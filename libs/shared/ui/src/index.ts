@@ -1,5 +1,6 @@
 export * from './lib/auth-layout/auth-layout';
 export * from './lib/auth-options-text/auth-options-text';
+export * from './lib/context/organisation-context';
 export * from './lib/dashboard-layout/dashboard-layout';
 export * from './lib/dashboard-nav/dashboard-nav';
 export * from './lib/next-link-mui-style/next-link-mui-style';

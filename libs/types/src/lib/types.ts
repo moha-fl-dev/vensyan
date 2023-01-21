@@ -57,3 +57,8 @@ export type UserMetaData = {
 export type UpdateUserMetaData = Partial<UserMetaData> & {
   user_id: string
 }
+
+
+export type OrganisationWithId = Torganisation & {
+  user_id: string
+}

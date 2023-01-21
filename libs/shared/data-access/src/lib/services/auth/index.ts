@@ -3,7 +3,11 @@ import { TsignIn, TsignUp, UserMetaData } from "@vensyan/types";
 import { injectable } from "tsyringe";
 import { SupaBaseClient } from "../../IoC/base";
 
+type UserInfo =
+    | { user_id: string }
+    | { user: User }
 
+type GetUserType = "user_id" | "user"
 
 @injectable()
 export class AuthService {
@@ -57,4 +61,13 @@ export class AuthService {
         const { data: { session } } = await client.auth.refreshSession()
     }
 
+    public async getCurrentUser(input: GetUserType): Promise<User | string | null> {
+        const { client } = this.supa.client()
+
+        const { data: { user } } = await client.auth.getUser()
+
+        if (input === 'user_id') return user?.id || null
+
+        return user
+    }
 }

@@ -81,3 +81,6 @@ export type SideNavListProps = {
 export type ItemBoxBooleanProp = {
     active: boolean;
 }
+
+
+export type organisationContextType = OrganisationCardProps

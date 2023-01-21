@@ -37,9 +37,12 @@ const authMiddleware = t.middleware(async ({ ctx, next, meta }) => {
 
     const authService = container.resolve<AuthService>(AuthService)
 
+    const user_id = await authService.getCurrentUser("user_id") as string // can never be null
+
     return next({
         ctx: {
-            authService
+            authService,
+            user_id
         },
     });
 });

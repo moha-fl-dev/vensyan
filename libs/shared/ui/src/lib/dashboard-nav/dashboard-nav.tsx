@@ -25,7 +25,7 @@ export function DashboardNav() {
           <LogoIcon width={50} height={50} />
         </Grid>
         <Grid item marginTop={2}>
-          <OrganisationCard organisation_name='Pieter Jelles' city='Leeuwarden' />
+          <OrganisationCard />
         </Grid>
         <Grid item xs marginTop={2}>
           <SideNav groupTitle='General' list={sideNavListItemsGeneral} />

@@ -1,9 +1,13 @@
 
 import CorporateFareOutlinedIcon from '@mui/icons-material/CorporateFareOutlined';
 import { Box, Grid, styled, Typography } from '@mui/material';
-import { OrganisationCardProps } from '../ui-types';
+import { useContext } from 'react';
+import { OrgnisationContext } from '../context/organisation-context';
 
-export function OrganisationCard({ organisation_name, city }: OrganisationCardProps) {
+export function OrganisationCard() {
+
+  const contextValues = useContext(OrgnisationContext);
+
   return (
     <StyledOrganizationWrapper>
       <Grid
@@ -26,7 +30,7 @@ export function OrganisationCard({ organisation_name, city }: OrganisationCardPr
                   fontWeight: 'bold',
                 }}
               >
-                {organisation_name}
+                {contextValues?.organisation_name}
               </Typography>
             </Grid>
 
@@ -37,7 +41,7 @@ export function OrganisationCard({ organisation_name, city }: OrganisationCardPr
                   fontSize: '0.6rem'
                 }}
               >
-                {city}
+                {contextValues?.city}
               </Typography>
             </Grid>
           </Grid>

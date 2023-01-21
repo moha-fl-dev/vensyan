@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material';
-import { DashboardLayout, NextPageWithLayout } from '@vensyan/shared/ui';
+import { NextPageWithLayout } from '@vensyan/shared/ui';
 import { ReactElement } from 'react';
+import { DashboardLayout } from '../../layouts/dashboard';
 
 
 const DashBoard: NextPageWithLayout = (): ReactElement => {
@@ -11,6 +12,7 @@ const DashBoard: NextPageWithLayout = (): ReactElement => {
 
 
 DashBoard.getLayout = function (page: ReactElement): ReactElement {
+
     return (
         <DashboardLayout title='Dashboard'>
             {page}
