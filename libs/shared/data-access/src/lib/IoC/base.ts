@@ -1,16 +1,13 @@
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { createClient } from '@supabase/supabase-js';
-import { Database, supabaseServerClientParams } from '@vensyan/types';
+import type { Database, supabaseServerClientParams } from '@vensyan/types';
 import { injectable } from 'tsyringe';
 
 @injectable()
 export class SupaBaseClient {
 
 
-    constructor(
-        private readonly _client: supabaseServerClientParams,
-
-    ) { }
+    constructor(private readonly _client: supabaseServerClientParams) { }
 
     client() {
 

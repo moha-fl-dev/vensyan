@@ -2,7 +2,8 @@ import { TRPCClientError } from "@trpc/client";
 import { AnyRouter, TRPCError } from "@trpc/server";
 import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc";
 import * as React from "react";
-import { FieldValues, UseFormSetError } from "react-hook-form";
+import { FieldPath, FieldValues, UseFormSetError } from "react-hook-form";
+import { ZodIssue } from "zod";
 import { isTrpcClientError } from "../shared-utils";
 
 type DisspatchServerErrorParams<S extends FieldValues> = {
@@ -16,10 +17,10 @@ type SchemaError<S extends FieldValues> = {
 }
 
 type SchemaErrorParams = {
-    error: TRPCError
+    issues: ZodIssue[]
 }
 
-type DispatchSchemaErrorParams<R extends AnyRouter, S extends FieldValues> = SchemaError<S> & SchemaErrorParams
+type DispatchSchemaErrorParams<S extends FieldValues> = SchemaError<S> & SchemaErrorParams
 
 
 export function dispatchServerError<R extends AnyRouter, S extends FieldValues>(params: DisspatchServerErrorParams<S>): void {
@@ -27,19 +28,23 @@ export function dispatchServerError<R extends AnyRouter, S extends FieldValues>(
     const { setStateAction, error, zodSchemaError: { setError } } = params;
 
     if (isTrpcClientError<R>(error)) {
+
         const { data, message, meta, name, shape, stack, cause } = error as TRPCClientError<R>;
 
 
         if (data) {
 
             if (data.zodError) {
+                const zodErr = data.zodError as ZodIssue[]
 
-                return dispatchZodSchemaError<R, S>({ error: data, setError })
+                return dispatchZodSchemaError<S>({ issues: zodErr, setError })
             }
 
             const { code } = data as TRPCError;
 
             const responseMessage = trpcErrorCodeToMessage[code];
+
+            if (responseMessage === undefined) return setStateAction(() => "Oeps. something went wrong. Please try again later.");
 
             return code === "INTERNAL_SERVER_ERROR" ? setStateAction(() => responseMessage) : setStateAction(() => message);
 
@@ -48,35 +53,36 @@ export function dispatchServerError<R extends AnyRouter, S extends FieldValues>(
     }
 
 
-    const { code, stack } = error as TRPCError;
+    const { code } = error as TRPCError;
 
     const responseMessage = trpcErrorCodeToMessage[code];
+
+    if (responseMessage === undefined) return setStateAction(() => "Oeps. something went wrong. Please try again later.");
 
     return setStateAction(() => responseMessage);
 }
 
 
-function dispatchZodSchemaError<R extends AnyRouter, S extends FieldValues>(params: DispatchSchemaErrorParams<R, S>): void {
+function dispatchZodSchemaError<S extends FieldValues>(params: DispatchSchemaErrorParams<S>): void {
 
-    // console.log(params)
 
-    const { error, setError } = params
+    const { issues, setError } = params
 
-    const { stack, cause } = error;
+    issues.reduce((acc: Partial<Record<keyof S, string>>, curr) => {
 
-    console.log(cause!.stack)
+        const key = curr.path[0] as FieldPath<S>
 
-    // const zodErr = data!.zodError as ZodIssue[]
+        const message = acc[key] = curr.message
 
-    // zodErr.forEach((err) => {
 
-    //     const field = err.path[0] as FieldPath<S>
+        setError(key, {
+            type: "manual",
+            message
+        })
 
-    //     return setError(field, {
-    //         type: 'manual',
-    //         message: err.message
-    //     })
-    // })
+        return acc
+
+    }, {})
 }
 
 

@@ -5,6 +5,7 @@ import { dispatchServerError } from '@vensyan/shared/utils';
 import { Torganisation } from '@vensyan/types';
 import { LogoIcon } from 'libs/shared/ui/src/lib/logo/logo';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { ReactElement, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { trpc } from '../../../utils/trpc';
@@ -12,6 +13,8 @@ import { trpc } from '../../../utils/trpc';
 const Onboard: NextPageWithLayout = (): ReactElement => {
 
     const theme = useTheme();
+
+    const router = useRouter();
 
     const [serverError, setServerError] = useState<string | null>(null);
 
@@ -28,12 +31,14 @@ const Onboard: NextPageWithLayout = (): ReactElement => {
 
     const { mutate } = trpc.Organisation.new.useMutation({
         onSuccess: (data) => {
+            router.push('/dashboard');
         },
 
         onError: (error) => {
             return dispatchServerError<AppRouter, Torganisation>({
                 setStateAction: setServerError,
-                error, zodSchemaError: {
+                error,
+                zodSchemaError: {
                     setError
                 }
             })
@@ -103,10 +108,10 @@ const Onboard: NextPageWithLayout = (): ReactElement => {
                                 name='organisation_name'
                                 control={control}
                                 rules={{
-                                    // required: {
-                                    //     value: true,
-                                    //     message: 'Please enter your organisation name'
-                                    // }
+                                    required: {
+                                        value: true,
+                                        message: 'Please enter your organisation name'
+                                    }
                                 }}
                                 render={({ field }) => (
 
