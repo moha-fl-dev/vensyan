@@ -1,10 +1,12 @@
 import { Backdrop, CircularProgress } from "@mui/material";
-import { Ilayout, OrgnisationContext } from "@vensyan/shared/ui";
-import { trpc } from "../utils/trpc";
+import { businessApi } from "@vensyan/business/utils";
+import { DashboardLayout, LayoutPropsWithTitle, OrgnisationContext } from "@vensyan/shared/ui";
 
-export function OrganisationContextProvider({ children }: Ilayout) {
+export function LayoutWithOrganisationContext({ children, title }: LayoutPropsWithTitle) {
 
-    const { data, isLoading } = trpc.Organisation.get.useQuery();
+    const { data, isLoading } = businessApi.Organisation.get.useQuery(undefined, {
+        refetchOnWindowFocus: false,
+    });
 
     if (isLoading) {
 
@@ -22,7 +24,9 @@ export function OrganisationContextProvider({ children }: Ilayout) {
 
     return (
         <OrgnisationContext.Provider value={{ city, organisation_name }}>
-            {children}
+            <DashboardLayout title={title}>
+                {children}
+            </DashboardLayout>
         </OrgnisationContext.Provider>
     );
 }

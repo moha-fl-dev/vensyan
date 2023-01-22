@@ -18,6 +18,8 @@
       "@vensyan/business/data-access": [
         "libs/business/data-access/src/index.ts"
       ],
+      "@vensyan/business/ui": ["libs/business/ui/src/index.ts"],
+      "@vensyan/business/utils": ["libs/business/utils/src/index.ts"],
       "@vensyan/shared/data-access": ["libs/shared/data-access/src/index.ts"],
       "@vensyan/shared/ui": ["libs/shared/ui/src/index.ts"],
       "@vensyan/shared/utils": ["libs/shared/utils/src/index.ts"],

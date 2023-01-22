@@ -1,6 +1,7 @@
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Alert, Box, Button, FormControl, Grid, TextField } from '@mui/material';
 import { AppRouter } from '@vensyan/business/data-access';
+import { businessApi } from '@vensyan/business/utils';
 import { redirectIfAuthed } from '@vensyan/shared/data-access';
 import { AuthLayout, AuthOptionsText, Link, NextPageWithLayout } from '@vensyan/shared/ui';
 import { dispatchServerError, supabaseServerClientProps } from '@vensyan/shared/utils';
@@ -10,7 +11,6 @@ import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next/types';
 import { ReactElement, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { trpc } from '../../utils/trpc';
 
 const SignIn: NextPageWithLayout = (): ReactElement => {
     const router = useRouter();
@@ -26,7 +26,7 @@ const SignIn: NextPageWithLayout = (): ReactElement => {
         }
     );
 
-    const { mutate, isLoading } = trpc.auth.signIn.useMutation({
+    const { mutate, isLoading } = businessApi.auth.signIn.useMutation({
 
         onSuccess: () => {
             router.push('/dashboard');

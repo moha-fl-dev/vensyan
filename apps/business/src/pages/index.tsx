@@ -1,14 +1,14 @@
 import { Backdrop, Box, Button, CircularProgress, Paper } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import { businessApi } from '@vensyan/business/utils';
 import { Link, NextPageWithLayout } from '@vensyan/shared/ui';
 import Head from 'next/head';
 import { ReactElement } from 'react';
-import { trpc } from '../utils/trpc';
 
 
 const Home: NextPageWithLayout = (): ReactElement => {
 
-  const { data, isLoading } = trpc.hello.useQuery({ text: 'Vensyan' });
+  const { data, isLoading } = businessApi.hello.useQuery({ text: 'Vensyan' });
 
   if (isLoading) {
     return (

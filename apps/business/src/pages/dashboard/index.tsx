@@ -1,8 +1,7 @@
 import { Typography } from '@mui/material';
+import { LayoutWithOrganisationContext } from '@vensyan/business/ui';
 import { NextPageWithLayout } from '@vensyan/shared/ui';
 import { ReactElement } from 'react';
-import { DashboardLayout } from '../../layouts/dashboard';
-
 
 const DashBoard: NextPageWithLayout = (): ReactElement => {
     return (
@@ -14,9 +13,9 @@ const DashBoard: NextPageWithLayout = (): ReactElement => {
 DashBoard.getLayout = function (page: ReactElement): ReactElement {
 
     return (
-        <DashboardLayout title='Dashboard'>
+        <LayoutWithOrganisationContext title='Dashboard'>
             {page}
-        </DashboardLayout>
+        </LayoutWithOrganisationContext>
     );
 };
 
