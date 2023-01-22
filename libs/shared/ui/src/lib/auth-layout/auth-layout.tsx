@@ -1,6 +1,12 @@
-import { Box, Container, Grid, styled, Typography, useTheme } from '@mui/material';
-import { LogoIcon } from '../logo/logo';
+import { Container, Grid, styled, Typography, useTheme } from '@mui/material';
+import dynamic from 'next/dynamic';
 import { LayoutPropsWithTitle, WithComponentPropType } from '../ui-types';
+
+const LogoIcon = dynamic(() => import('../logo/logo').then((mod) => mod.LogoIcon), { ssr: false });
+
+const Box = dynamic(() => import('@mui/material').then((mod) => mod.Box), { ssr: false });
+
+
 
 export function AuthLayout({ children, title }: LayoutPropsWithTitle): React.ReactElement {
 
