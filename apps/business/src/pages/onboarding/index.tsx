@@ -1,5 +1,6 @@
 import { Alert, Box, Button, Container, FormControl, Grid, styled, TextField, Typography, useTheme } from '@mui/material';
 import { AppRouter } from '@vensyan/business/data-access';
+import { businessApi } from '@vensyan/business/utils';
 import { NextPageWithLayout, OnboardingLayout } from '@vensyan/shared/ui';
 import { dispatchServerError, supabaseServerClientProps } from '@vensyan/shared/utils';
 import { Torganisation } from '@vensyan/types';
@@ -9,7 +10,6 @@ import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next/types';
 import { ReactElement, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { trpc } from '../../utils/trpc';
 
 const Onboard: NextPageWithLayout = (): ReactElement => {
 
@@ -30,7 +30,7 @@ const Onboard: NextPageWithLayout = (): ReactElement => {
         }
     });
 
-    const { mutate } = trpc.Organisation.new.useMutation({
+    const { mutate } = businessApi.Organisation.new.useMutation({
         onSuccess: (data) => {
             router.push('/dashboard');
         },

@@ -1,9 +1,10 @@
-import { Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { ReactElement } from 'react';
-import { Link } from '../next-link-mui-style/next-link-mui-style';
-import { ILogoProps } from '../ui-types';
+import type { ReactElement } from 'react';
+import type { ILogoProps } from '../ui-types';
 
+const Link = dynamic(() => import('../next-link-mui-style/next-link-mui-style').then((mod) => mod.Link), { ssr: false })
 
 export function Logo({ variant, fontWeight }: ILogoProps): ReactElement {
 

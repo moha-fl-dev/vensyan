@@ -1,21 +1,40 @@
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { Alert, Box, Button, FormControl, Grid, TextField } from '@mui/material';
-import { AppRouter } from '@vensyan/business/data-access';
+import type { AppRouter } from '@vensyan/business/data-access';
 import { businessApi } from '@vensyan/business/utils';
-import { redirectIfAuthed } from '@vensyan/shared/data-access';
-import { AuthLayout, AuthOptionsText, Link, NextPageWithLayout } from '@vensyan/shared/ui';
+import type { NextPageWithLayout } from '@vensyan/shared/ui';
 import { dispatchServerError, supabaseServerClientProps } from '@vensyan/shared/utils';
-import { TsignIn } from '@vensyan/types';
-import Head from 'next/head';
+import type { TsignIn } from '@vensyan/types';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next/types';
-import { ReactElement, useState } from 'react';
+import { useState, type ReactElement } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+
+const Head = dynamic(() => import('next/head'), { ssr: false });
+
+const MoreHorizIcon = dynamic(() => import('@mui/icons-material/MoreHoriz'), { ssr: false });
+
+const Alert = dynamic(() => import('@mui/material/Alert'), { ssr: false });
+
+const Button = dynamic(() => import('@mui/material/Button'), { ssr: false });
+
+const FormControl = dynamic(() => import('@mui/material/FormControl'), { ssr: false });
+
+const AuthLayout = dynamic(() => import('@vensyan/shared/ui').then((mod) => mod.AuthLayout), { ssr: false });
+
+const AuthOptionsText = dynamic(() => import('@vensyan/shared/ui').then((mod) => mod.AuthOptionsText), { ssr: false });
+
+const Link = dynamic(() => import('@vensyan/shared/ui').then((mod) => mod.Link), { ssr: false });
+
 
 const SignIn: NextPageWithLayout = (): ReactElement => {
     const router = useRouter();
 
     const [serverError, setServerError] = useState<string | null>(null);
+
 
     const { register, handleSubmit, control, formState: { errors }, setError } = useForm<TsignIn>(
         {
@@ -194,6 +213,8 @@ export default SignIn;
 
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+
+    const redirectIfAuthed = await import('@vensyan/shared/data-access').then((mod) => mod.redirectIfAuthed);
 
     const client = supabaseServerClientProps(ctx)
 
