@@ -1,17 +1,28 @@
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { Alert, Box, Button, FormControl, Grid, TextField } from '@mui/material';
-import { AppRouter } from '@vensyan/business/data-access';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import type { AppRouter } from '@vensyan/business/data-access';
 import { businessApi } from '@vensyan/business/utils';
-import { redirectIfAuthed } from '@vensyan/shared/data-access';
-import { AuthLayout, AuthOptionsText, Link, NextPageWithLayout } from '@vensyan/shared/ui';
-import { dispatchServerError, supabaseServerClientProps } from '@vensyan/shared/utils';
-import { SignUpWithConfirmPassword, TsignIn } from '@vensyan/types';
+import type { NextPageWithLayout } from '@vensyan/shared/ui';
+import { dispatchServerError } from '@vensyan/shared/utils';
+import type { SignUpWithConfirmPassword } from '@vensyan/types';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next/types';
 import { ReactElement, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
+
+const MoreHorizIcon = dynamic(() => import('@mui/icons-material/MoreHoriz'), { ssr: false });
+
+const Alert = dynamic(() => import('@mui/material/Alert'), { ssr: false });
+
+const Link = dynamic(() => import('@vensyan/shared/ui').then((mod) => mod.Link), { ssr: false });
+
+const AuthOptionsText = dynamic(() => import('@vensyan/shared/ui').then((mod) => mod.AuthOptionsText), { ssr: false });
 
 const SignIn: NextPageWithLayout = (): ReactElement => {
 
@@ -37,6 +48,8 @@ const SignIn: NextPageWithLayout = (): ReactElement => {
 
         onError(error) {
 
+
+
             return dispatchServerError<AppRouter, SignUpWithConfirmPassword>({
                 setStateAction: setServerError,
                 error,
@@ -48,7 +61,7 @@ const SignIn: NextPageWithLayout = (): ReactElement => {
         },
     });
 
-    const onSubmit: SubmitHandler<TsignIn> = (data) => {
+    const onSubmit: SubmitHandler<SignUpWithConfirmPassword> = (data) => {
         mutate(data)
     }
 
@@ -208,6 +221,9 @@ const SignIn: NextPageWithLayout = (): ReactElement => {
 
 
 SignIn.getLayout = function (page: ReactElement): ReactElement {
+
+    const AuthLayout = dynamic(() => import('@vensyan/shared/ui').then((mod) => mod.AuthLayout), { ssr: false });
+
     return (
         <AuthLayout title='Sign up'>
             <Head>
@@ -223,6 +239,10 @@ export default SignIn;
 
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+
+    const redirectIfAuthed = await import('@vensyan/shared/data-access').then((mod) => mod.redirectIfAuthed);
+
+    const supabaseServerClientProps = await import('@vensyan/shared/utils').then((mod) => mod.supabaseServerClientProps);
 
     const client = supabaseServerClientProps(ctx)
 

@@ -1,7 +1,8 @@
-import { Typography } from '@mui/material';
-import { LayoutWithOrganisationContext } from '@vensyan/business/ui';
-import { NextPageWithLayout } from '@vensyan/shared/ui';
-import { ReactElement } from 'react';
+import Typography from '@mui/material/Typography';
+import { type NextPageWithLayout } from '@vensyan/shared/ui';
+import { type ReactElement } from 'react';
+
+import dynamic from 'next/dynamic';
 
 const DashBoard: NextPageWithLayout = (): ReactElement => {
     return (
@@ -11,6 +12,8 @@ const DashBoard: NextPageWithLayout = (): ReactElement => {
 
 
 DashBoard.getLayout = function (page: ReactElement): ReactElement {
+
+    const LayoutWithOrganisationContext = dynamic(() => import('@vensyan/business/ui').then((mod) => mod.LayoutWithOrganisationContext), { ssr: false });
 
     return (
         <LayoutWithOrganisationContext title='Dashboard'>

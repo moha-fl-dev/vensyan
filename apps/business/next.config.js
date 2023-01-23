@@ -4,7 +4,7 @@
 const { withNx } = require('@nrwl/next/plugins/with-nx');
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: true,
+  enabled: process.env.ANALYZE === "true",
 });
 
 /**

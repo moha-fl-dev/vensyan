@@ -1,15 +1,26 @@
-import { Alert, Box, Button, Container, FormControl, Grid, styled, TextField, Typography, useTheme } from '@mui/material';
-import { AppRouter } from '@vensyan/business/data-access';
+import { styled, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import FormControl from '@mui/material/FormControl';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import type { AppRouter } from '@vensyan/business/data-access';
 import { businessApi } from '@vensyan/business/utils';
-import { NextPageWithLayout, OnboardingLayout } from '@vensyan/shared/ui';
-import { dispatchServerError, supabaseServerClientProps } from '@vensyan/shared/utils';
-import { Torganisation } from '@vensyan/types';
-import { LogoIcon } from 'libs/shared/ui/src/lib/logo/logo';
+import { LogoIcon, type NextPageWithLayout } from '@vensyan/shared/ui';
+import { dispatchServerError } from '@vensyan/shared/utils';
+import type { Torganisation } from '@vensyan/types';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next/types';
 import { ReactElement, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+
+
+
+const Alert = dynamic(() => import('@mui/material/Alert'), { ssr: false });
 
 const Onboard: NextPageWithLayout = (): ReactElement => {
 
@@ -338,11 +349,13 @@ const StyledContainerWithShadowd = styled(Box)(({ theme }) => ({
 }))
 
 Onboard.getLayout = function (page: ReactElement): ReactElement {
+
+    const OnboardingLayout = dynamic(() => import('@vensyan/shared/ui').then((mod) => mod.OnboardingLayout), {
+        ssr: false,
+    });
+
     return (
         <OnboardingLayout>
-            <Head>
-                <title></title>
-            </Head>
             {page}
         </OnboardingLayout>
     );
@@ -353,6 +366,8 @@ export default Onboard;
 
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+
+    const supabaseServerClientProps = await import('@vensyan/shared/utils').then((mod) => mod.supabaseServerClientProps)
 
     const client = supabaseServerClientProps(ctx)
 

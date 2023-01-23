@@ -1,16 +1,24 @@
-import { Backdrop, Box, Button, CircularProgress, Paper } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { businessApi } from '@vensyan/business/utils';
-import { Link, NextPageWithLayout } from '@vensyan/shared/ui';
-import Head from 'next/head';
+import type { NextPageWithLayout } from '@vensyan/shared/ui';
+import dynamic from 'next/dynamic';
 import { ReactElement } from 'react';
 
+const Head = dynamic(() => import('next/head').then((mod) => mod.default), { ssr: false });
+const Link = dynamic(() => import('@vensyan/shared/ui').then((mod) => mod.Link), { ssr: false });
 
 const Home: NextPageWithLayout = (): ReactElement => {
 
   const { data, isLoading } = businessApi.hello.useQuery({ text: 'Vensyan' });
 
   if (isLoading) {
+
+    const Backdrop = dynamic(() => import('@mui/material/Backdrop').then((mod) => mod.default), { ssr: false });
+
     return (
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

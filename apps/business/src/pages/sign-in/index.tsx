@@ -1,17 +1,16 @@
 import { Box } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
 import type { AppRouter } from '@vensyan/business/data-access';
 import { businessApi } from '@vensyan/business/utils';
 import type { NextPageWithLayout } from '@vensyan/shared/ui';
-import { dispatchServerError, supabaseServerClientProps } from '@vensyan/shared/utils';
+import { dispatchServerError } from '@vensyan/shared/utils';
 import type { TsignIn } from '@vensyan/types';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next/types';
 import { useState, type ReactElement } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
 
 const Head = dynamic(() => import('next/head'), { ssr: false });
 
@@ -22,8 +21,6 @@ const Alert = dynamic(() => import('@mui/material/Alert'), { ssr: false });
 const Button = dynamic(() => import('@mui/material/Button'), { ssr: false });
 
 const FormControl = dynamic(() => import('@mui/material/FormControl'), { ssr: false });
-
-const AuthLayout = dynamic(() => import('@vensyan/shared/ui').then((mod) => mod.AuthLayout), { ssr: false });
 
 const AuthOptionsText = dynamic(() => import('@vensyan/shared/ui').then((mod) => mod.AuthOptionsText), { ssr: false });
 
@@ -65,9 +62,6 @@ const SignIn: NextPageWithLayout = (): ReactElement => {
     });
 
     const onSubmit: SubmitHandler<TsignIn> = (data) => {
-
-
-
 
         mutate(data)
     }
@@ -202,6 +196,8 @@ const SignIn: NextPageWithLayout = (): ReactElement => {
 
 
 SignIn.getLayout = function (page: ReactElement): ReactElement {
+    const AuthLayout = dynamic(() => import('@vensyan/shared/ui').then((mod) => mod.AuthLayout), { ssr: false });
+
     return (
         <AuthLayout title='Sign in'>
             <Head>
@@ -219,6 +215,8 @@ export default SignIn;
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     const redirectIfAuthed = await import('@vensyan/shared/data-access').then((mod) => mod.redirectIfAuthed);
+    const supabaseServerClientProps = await import('@vensyan/shared/utils').then((mod) => mod.supabaseServerClientProps);
+
 
     const client = supabaseServerClientProps(ctx)
 
