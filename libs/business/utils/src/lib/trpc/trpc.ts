@@ -1,7 +1,6 @@
 import { httpBatchLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
-
-import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
+import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import { AppRouter } from '@vensyan/business/data-access';
 import superjson from 'superjson';
 

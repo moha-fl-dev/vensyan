@@ -1,5 +1,5 @@
 import { AuthError, User } from "@supabase/supabase-js";
-import { TsignIn, TsignUp, UserMetaData } from "@vensyan/types";
+import { TsignIn, TsignUp, UpdateUserMetaData } from "@vensyan/types";
 import { injectable } from "tsyringe";
 import { SupaBaseClient } from "../../IoC/base";
 
@@ -46,9 +46,29 @@ export class AuthService {
         return user
     }
 
-    public async updateUserMetadata({ account_type, hasOrganization }: UserMetaData) {
+    static async updateUserMetaData(input: UpdateUserMetaData, supa: SupaBaseClient): Promise<boolean> {
 
+        const { admin, account_type } = supa.admin()
+
+        const { hasOrganization, user_id: id } = input
+
+        const { data, error } = await admin.updateUserById(id, {
+            user_metadata: {
+                hasOrganization,
+                account_type
+            }
+        })
+
+        if (error) {
+
+            console.log(error)
+
+            throw error
+        }
+
+        return true
     }
+
 
     public async signOut(): Promise<void> { }
 
