@@ -1,12 +1,12 @@
 import { TRPCError } from '@trpc/server';
-import { OrganisationSchema, OrganisationWithId, Torganisation } from '@vensyan/types';
+import { OrganisationSchema, OrganisationWithId, Organisation_type } from '@vensyan/types';
 import { ZodError } from 'zod';
 import { organisationProcedure, router } from "../../trpc";
 
 
 export const Organisation = router({
     new: organisationProcedure.input({
-        parse(input: Torganisation) {
+        parse(input: Organisation_type) {
 
             try {
                 OrganisationSchema.parse(input);
@@ -15,7 +15,7 @@ export const Organisation = router({
             } catch (e: unknown) {
 
                 if (e instanceof ZodError) {
-                    throw new ZodError<Torganisation>(e.issues)
+                    throw new ZodError<Organisation_type>(e.issues)
                 }
 
                 throw new TRPCError({

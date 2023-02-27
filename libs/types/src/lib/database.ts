@@ -9,42 +9,30 @@ export type Json =
 export interface Database {
     public: {
         Tables: {
-            organisations: {
+            suppliers: {
                 Row: {
-                    account_type: Database["public"]["Enums"]["account_type"]
-                    city: string
-                    country: string
                     created_at: string
-                    house_number: string
-                    organisation_id: string
-                    organisation_name: string
-                    street_name: string
+                    sector: Database["public"]["Enums"]["sector"]
+                    supplier_id: string
+                    supplier_name: string
+                    supplier_type: Database["public"]["Enums"]["supplier_type"]
                     user_id: string
-                    zip_code: string
                 }
                 Insert: {
-                    account_type?: Database["public"]["Enums"]["account_type"]
-                    city: string
-                    country: string
                     created_at?: string
-                    house_number: string
-                    organisation_id?: string
-                    organisation_name: string
-                    street_name: string
+                    sector?: Database["public"]["Enums"]["sector"]
+                    supplier_id?: string
+                    supplier_name: string
+                    supplier_type?: Database["public"]["Enums"]["supplier_type"]
                     user_id?: string
-                    zip_code: string
                 }
                 Update: {
-                    account_type?: Database["public"]["Enums"]["account_type"]
-                    city?: string
-                    country?: string
                     created_at?: string
-                    house_number?: string
-                    organisation_id?: string
-                    organisation_name?: string
-                    street_name?: string
+                    sector?: Database["public"]["Enums"]["sector"]
+                    supplier_id?: string
+                    supplier_name?: string
+                    supplier_type?: Database["public"]["Enums"]["supplier_type"]
                     user_id?: string
-                    zip_code?: string
                 }
             }
         }
@@ -56,8 +44,12 @@ export interface Database {
         }
         Enums: {
             account_type: "seller" | "buyer"
-            mood: "sad" | "ok" | "happy"
-            sector: "Educational" | "Salon" | "Office" | "Cleaning"
+            sector:
+            | "Education"
+            | "Salon supplies"
+            | "Office supplies"
+            | "Cleaning supplies"
+            supplier_type: "Wholesaler" | "Manufacturer"
         }
     }
 }

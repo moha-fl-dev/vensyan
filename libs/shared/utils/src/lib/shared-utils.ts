@@ -8,7 +8,18 @@ export function supaBaseClient({ req, res }: supabaseServerClientParams) {
   return createServerSupabaseClient<Database>({
     req,
     res,
-  })
+  },
+    // {
+    //   cookieOptions: {
+    //     secure: process.env.NODE_ENV === 'production',
+    //     domain: process.env.NODE_ENV === 'production' ? 'vensyan.com' : undefined,
+    //     maxAge: 60 * 60 * 24 * 7, // 7 days
+    //     path: '/',
+    //     sameSite: 'strict',
+
+    //   }
+    // }
+  )
 }
 
 export function supabaseServerClientProps(ctx: GetServerSidePropsContext) {

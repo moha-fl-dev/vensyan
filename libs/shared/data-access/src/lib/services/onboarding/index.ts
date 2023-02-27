@@ -13,15 +13,12 @@ export class OnboardingService {
 
         const { account_type, client } = this.supabaseClient.client()
 
-        const organisation_name = capitalize(input.organisation_name)
-        const city = capitalize(input.city)
+        const supplier_name = capitalize(input.supplier_name)
 
-        const { data, error } = await client.from('organisations').insert({
+        const { data, error } = await client.from('suppliers').insert({
             ...input,
-            organisation_name,
-            city,
             user_id: input.user_id,
-            account_type,
+            supplier_name,
         }).select('user_id').single()
 
         if (error) {
@@ -48,7 +45,7 @@ export class OnboardingService {
 
         const { client } = this.supabaseClient.client()
 
-        const { data, error } = await client.from('organisations').select('*').eq('user_id', input.user_id).single()
+        const { data, error } = await client.from('suppliers').select('*').eq('user_id', input.user_id).single()
 
         if (error) {
 

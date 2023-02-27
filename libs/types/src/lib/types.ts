@@ -7,9 +7,7 @@ export const SignInSchema = z.object({
   password: z.string().min(8, { message: 'Password must be at least 8 characters' })
 })
 
-export const SignUpSchema = z.object({
-  email: z.string().email({ message: 'Email must be a valid email' }),
-  password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
+export const SignUpSchema = SignInSchema.extend({
   ConfirmPassword: z.string().min(8, { message: 'Password must be at least 8 characters' })
 }).refine((val) => val.password === val.ConfirmPassword, { message: 'Passwords must match', path: ['ConfirmPassword'] })
 
@@ -27,17 +25,26 @@ export type supabaseServerClientParams = {
   account_type: Account_type
 }
 
+export const sector = ['Education', 'Salon supplies', 'Office supplies', 'Cleaning supplies'] as const
+
+export const supplier_type = ['Wholesaler', 'Manufacturer'] as const
 
 export const OrganisationSchema = z.object({
-  organisation_name: z.string().min(1, { message: 'Organisation name must be at least 1 character' }),
-  street_name: z.string().min(1, { message: 'Street name must be at least 1 character' }),
-  zip_code: z.string().min(1, { message: 'Zip code must be at least 1 character' }),
-  city: z.string().min(1, { message: 'City must be at least 1 character' }),
-  country: z.string().min(1, { message: 'Country must be at least 1 character' }),
-  house_number: z.string().min(1, { message: 'House number must be at least 1 character' }),
+  supplier_name: z.string().min(1, { message: 'Organisation name must be at least 1 character' }),
+  supplier_type: z.enum(supplier_type, {
+    required_error: 'Supplier type is required',
+  }),
+  sector: z.enum(sector, {
+    required_error: 'Sector is required',
+  }),
 })
 
-export type Torganisation = z.infer<typeof OrganisationSchema>
+export type Sector = typeof sector[number]
+
+export type Supplier_type = typeof supplier_type[number]
+
+
+export type Organisation_type = z.infer<typeof OrganisationSchema>
 
 export type SupabaseClientCtx = ReturnType<typeof supaBaseClient>
 
@@ -52,6 +59,8 @@ export interface BaseCtxParams {
 export type UserMetaData = {
   hasOrganization: boolean
   account_type: Account_type
+  sector: Sector
+  supplier_type: Supplier_type
 }
 
 export type UpdateUserMetaData = Partial<UserMetaData> & {
@@ -59,6 +68,6 @@ export type UpdateUserMetaData = Partial<UserMetaData> & {
 }
 
 
-export type OrganisationWithId = Torganisation & {
+export type OrganisationWithId = Organisation_type & {
   user_id: string
 }
